@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>블로그·인스타·스레드 자동 발행 대시보드</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>네이버 블로그 → 인스타 → 스레드</h1>
+    <div id="statusBar" class="status-bar">불러오는 중...</div>
+  </header>
+
+  <main>
+    <section class="card" id="loginSection">
+      <h2>① 네이버 로그인</h2>
+      <p class="hint">최초 1회, 또는 세션이 만료됐을 때만 다시 로그인하면 됩니다. 로그인 창이 새로 열립니다.</p>
+      <button id="naverLoginBtn">네이버 로그인</button>
+      <span id="naverLoginResult"></span>
+    </section>
+
+    <section class="card">
+      <h2>② 오늘의 글감</h2>
+      <button id="findTopicsBtn">글감 후보 3개 보기</button>
+      <div id="topicCandidates" class="candidates"></div>
+      <div class="manual-topic">
+        <input id="manualTopic" type="text" placeholder="직접 주제 입력" />
+        <button id="useManualTopicBtn">이 주제로 초안 만들기</button>
+      </div>
+    </section>
+
+    <section class="card" id="draftSection" hidden>
+      <h2>③ 블로그 초안 확인</h2>
+      <h3 id="draftTitle"></h3>
+      <div id="draftBody" class="draft-body"></div>
+      <button id="publishBtn">네이버에 발행</button>
+      <span id="publishStatus"></span>
+    </section>
+
+    <section class="card" id="resultSection" hidden>
+      <h2>④ 발행 완료 — 인스타/스레드 초안 (직접 업로드해주세요)</h2>
+      <p>블로그 발행 URL: <a id="publishedUrl" href="#" target="_blank"></a></p>
+
+      <h3>인스타그램 카드뉴스</h3>
+      <div id="igImages" class="ig-images"></div>
+      <textarea id="igCaption" rows="6" readonly></textarea>
+      <button id="copyCaptionBtn">캡션 복사</button>
+
+      <h3>스레드(Threads) 글타래</h3>
+      <div id="threadsPosts"></div>
+    </section>
+
+    <section class="card">
+      <h2>발행 이력</h2>
+      <table id="historyTable">
+        <thead><tr><th>날짜</th><th>주제</th><th>제목</th><th>상태</th><th>링크</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

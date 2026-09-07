@@ -1,0 +1,105 @@
+:root {
+  color-scheme: light;
+  --bg: #f7f7f8;
+  --card-bg: #ffffff;
+  --border: #e2e2e6;
+  --text: #1c1c1e;
+  --muted: #6b6b70;
+  --accent: #2f6fed;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", -apple-system, sans-serif;
+}
+
+header {
+  padding: 20px 24px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+}
+
+h1 { margin: 0 0 8px; font-size: 20px; }
+
+.status-bar { font-size: 13px; color: var(--muted); }
+
+main {
+  max-width: 760px;
+  margin: 24px auto;
+  padding: 0 16px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+.card h2 { margin-top: 0; font-size: 16px; }
+
+.hint { font-size: 13px; color: var(--muted); }
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.candidates { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+
+.candidates button {
+  background: #eef3ff;
+  color: var(--accent);
+  text-align: left;
+}
+
+.manual-topic { margin-top: 14px; display: flex; gap: 8px; }
+
+.manual-topic input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.draft-body { white-space: pre-wrap; line-height: 1.6; font-size: 15px; margin: 14px 0; }
+.draft-body .subheading { font-weight: 700; margin-top: 12px; }
+.draft-body img { max-width: 100%; border-radius: 8px; margin: 8px 0; }
+
+.ig-images { display: flex; gap: 10px; overflow-x: auto; margin: 12px 0; }
+.ig-images img { width: 160px; border-radius: 8px; border: 1px solid var(--border); }
+
+textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.thread-post {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+  font-size: 14px;
+}
+
+table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }

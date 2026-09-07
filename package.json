@@ -1,0 +1,23 @@
+{
+  "name": "naver-blog-social-autopublish",
+  "version": "1.0.0",
+  "description": "네이버 블로그 자동 발행 + 발행된 글을 원본으로 인스타그램 카드뉴스/스레드 초안을 재가공하는 로컬 대시보드 프로그램",
+  "type": "module",
+  "private": true,
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dry-run": "node src/pipeline.js --dry-run",
+    "install-browsers": "playwright install chromium"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.263",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "node-cron": "^3.0.3",
+    "playwright": "^1.47.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

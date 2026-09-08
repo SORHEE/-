@@ -3,36 +3,32 @@ cd /d "%~dp0"
 chcp 65001 >nul
 
 set "PF86=%ProgramFiles(x86)%"
-set "NPM_CMD=npm"
+set "NODE_EXE="
 
-where npm >nul 2>nul
-if not errorlevel 1 goto npm_found
+for /f "delims=" %%i in ('where node') do if not defined NODE_EXE set "NODE_EXE=%%i"
 
-if exist "%ProgramFiles%\nodejs\npm.cmd" (
-    set "NPM_CMD=%ProgramFiles%\nodejs\npm.cmd"
-    goto npm_found
+if not defined NODE_EXE (
+    if exist "%ProgramFiles%\nodejs\node.exe" set "NODE_EXE=%ProgramFiles%\nodejs\node.exe"
 )
-if exist "%PF86%\nodejs\npm.cmd" (
-    set "NPM_CMD=%PF86%\nodejs\npm.cmd"
-    goto npm_found
+if not defined NODE_EXE (
+    if exist "%PF86%\nodejs\node.exe" set "NODE_EXE=%PF86%\nodejs\node.exe"
 )
-if exist "%LocalAppData%\Programs\nodejs\npm.cmd" (
-    set "NPM_CMD=%LocalAppData%\Programs\nodejs\npm.cmd"
-    goto npm_found
+if not defined NODE_EXE (
+    if exist "%LocalAppData%\Programs\nodejs\node.exe" set "NODE_EXE=%LocalAppData%\Programs\nodejs\node.exe"
+)
+if not defined NODE_EXE (
+    echo Could not find Node.js on this computer.
+    echo Please install it from https://nodejs.org and try again.
+    pause
+    exit /b 1
 )
 
-echo Could not find npm anywhere on this computer.
-echo Please reinstall Node.js from https://nodejs.org and try again.
-pause
-exit /b 1
-
-:npm_found
 echo Starting the server...
 echo When you see a line like "dashboard: http://localhost:3000" below,
 echo leave this window open and open that address in your web browser.
 echo Closing this window stops the server.
 echo.
-call "%NPM_CMD%" start
+call "%NODE_EXE%" "src\server.js"
 echo.
 echo Server stopped. If there is an error message above, please take a screenshot and share it.
 pause

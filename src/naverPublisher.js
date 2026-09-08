@@ -34,16 +34,27 @@ export function hasNaverSession() {
  * 헤디드 브라우저를 띄워 사용자가 직접 네이버에 로그인하게 하고, 완료되면 세션을 저장한다.
  * 대시보드의 "네이버 로그인" 버튼에서 호출한다.
  */
-export async function loginAndSaveSession({ timeoutMs = 5 * 60 * 1000 } = {}) {
-  const selectors = loadSelectors();
+export async function loginAndSaveSession({ timeoutMs = 5 * 60 * 1000, pollIntervalMs = 1500 } = {}) {
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto("https://nid.naver.com/nidlogin.login");
 
-  try {
-    await page.waitForSelector(selectors.login.loginSuccessIndicator, { timeout: timeoutMs });
-  } catch {
+  // 로그인 완료 감지는 화면 요소(UI는 수시로 바뀜) 대신, 네이버가 로그인 성공 시 발급하는
+  // 인증 쿠키(NID_AUT, NID_SES)가 생겼는지로 판단한다 — 훨씬 안정적이다.
+  const start = Date.now();
+  let loggedIn = false;
+  while (Date.now() - start < timeoutMs) {
+    const cookies = await context.cookies("https://www.naver.com");
+    const names = cookies.map((c) => c.name);
+    if (names.includes("NID_AUT") && names.includes("NID_SES")) {
+      loggedIn = true;
+      break;
+    }
+    await page.waitForTimeout(pollIntervalMs);
+  }
+
+  if (!loggedIn) {
     await browser.close();
     throw new Error("로그인 대기 시간이 초과됐습니다. 다시 시도해주세요.");
   }

@@ -2,6 +2,21 @@
 cd /d "%~dp0"
 chcp 65001 >nul
 
+echo %CD% | findstr /i "\\Temp\\" >nul
+if not errorlevel 1 (
+    echo =========================================
+    echo  It looks like this file is running from
+    echo  INSIDE the zip file, not from an extracted
+    echo  folder. Please close this window and:
+    echo   1. Find the downloaded .zip file
+    echo   2. RIGHT-CLICK it and choose "Extract All..."
+    echo   3. Open the NEW folder that appears
+    echo   4. Double-click 2_start.bat from THAT folder
+    echo =========================================
+    pause
+    exit /b 1
+)
+
 set "PF86=%ProgramFiles(x86)%"
 set "NODE_EXE="
 

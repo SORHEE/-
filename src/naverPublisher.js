@@ -124,8 +124,9 @@ async function insertImage(page, frame, selectors, imagePath) {
   await page.keyboard.press("Enter");
 }
 
-async function applyUniformFontSize(page, frame, selectors, bodySelector) {
-  await frame.click(bodySelector);
+async function applyUniformFontSize(page, frame, selectors) {
+  // 마지막으로 입력한 문단에 커서(포커스)가 이미 있으므로, 특정 문단을 다시 찾아 클릭할
+  // 필요가 없다(그 selector가 실제 화면과 안 맞으면 여기서 타임아웃이 나기 쉬웠음).
   await page.keyboard.down("Control");
   await page.keyboard.press("a");
   await page.keyboard.up("Control");
@@ -174,7 +175,7 @@ export async function publishPost({ blogId, title, blocks, imagesByAlt = {}, ope
     }
 
     // 본문 전체 15pt로 통일 (요구사항 1)
-    await applyUniformFontSize(page, frame, selectors, selectors.writePage.bodyArea);
+    await applyUniformFontSize(page, frame, selectors);
 
     // 발행 레이어 열기
     await page.click(selectors.publish.openPublishLayerButton);

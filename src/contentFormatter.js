@@ -21,9 +21,16 @@ const CITATION_PATTERNS = [
   /^\s*출처\s*[:：].*$/gm,
 ];
 
-/** 리터럴 "\n"(백슬래시+n 두 글자)을 실제 개행으로 치환한다. */
+/**
+ * 리터럴 "\n"(백슬래시+n 두 글자)을 실제 개행으로 치환한다.
+ * 한글 Windows에서는 백슬래시가 원화 기호(₩)로 나타나 "₩n"으로 깨지는 경우도 있어 함께 처리한다.
+ */
 export function fixLiteralNewlines(text) {
-  return text.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n");
+  return text
+    .replace(/₩r₩n/g, "\n")
+    .replace(/₩n/g, "\n")
+    .replace(/\\r\\n/g, "\n")
+    .replace(/\\n/g, "\n");
 }
 
 /** 자동으로 붙는 출처 표기 패턴을 제거한다. */

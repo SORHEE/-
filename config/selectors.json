@@ -12,7 +12,7 @@
 
   "toolbar": {
     "imageButton": ".se-image-toolbar-button, button[data-name='image']",
-    "fontSizeDropdown": ".se-toolbar-option-font-size-code-select-button",
+    "fontSizeDropdown": ".se-font-size-code-toolbar-button, button[data-name='font-size']",
     "fontSize15pt": "li[data-value='15'] button, .se-toolbar-option-font-size-code-item[data-value='15']",
     "quoteButton": "button[data-name='quotation']",
     "quoteTypeDefault": ".se-quotation-toolbar-panel .se-quotation-type-default"

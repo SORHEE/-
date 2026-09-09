@@ -6,6 +6,7 @@
     "iframeSelector": "#mainFrame",
     "titleArea": ".se-title-text .se-text-paragraph",
     "documentTitleFallback": ".se-documentTitle .se-text-paragraph",
+    "resumeDraftCancelButton": "button:has-text('취소')",
     "helpCloseButton": "button.se-help-panel-close-button, .se-popup-button-cancel",
     "helperPopupCancel": ".se-popup-dim + .se-popup .se-popup-button-cancel"
   },

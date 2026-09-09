@@ -72,6 +72,18 @@ async function getEditorFrame(page, selectors) {
   return frame;
 }
 
+async function dismissResumeDraftPopup(page, selectors) {
+  // "작성 중인 글이 있습니다. 이어서 작성하시겠습니까?" 팝업 — 예전에 자동화가 중간에 멈췄을 때
+  // 생긴 임시저장 글을 무시하고 새 글로 시작하기 위해 "취소"를 누른다. 이 팝업은 iframe이 아니라
+  // 페이지 최상단에 뜨므로 page에서 바로 찾는다.
+  try {
+    const cancelButton = page.locator(selectors.writePage.resumeDraftCancelButton).first();
+    await cancelButton.click({ timeout: 3000 });
+  } catch {
+    // 팝업이 없으면 무시
+  }
+}
+
 async function dismissHelpPopups(frame, selectors) {
   for (const sel of [selectors.writePage.helpCloseButton, selectors.writePage.helperPopupCancel]) {
     try {
@@ -155,6 +167,7 @@ export async function publishPost({ blogId, title, blocks, imagesByAlt = {}, ope
 
   try {
     await page.goto(selectors.writePage.url.replace("{blogId}", blogId));
+    await dismissResumeDraftPopup(page, selectors);
     const frame = await getEditorFrame(page, selectors);
     await dismissHelpPopups(frame, selectors);
 

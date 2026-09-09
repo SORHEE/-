@@ -111,9 +111,14 @@ async function typeParagraphLine(page, text, { bold = false } = {}) {
 }
 
 async function insertImage(page, frame, selectors, imagePath) {
+  // 이미지 버튼 클릭이 실제 OS 파일 선택 창(윈도우 탐색기)을 띄우므로, 그 창이 뜨기 전에
+  // Playwright의 filechooser 이벤트로 가로채서 자동으로 파일을 넣어준다. 이렇게 하지 않으면
+  // 진짜 탐색기 창이 열린 채로 멈추고, 그 뒤 키보드 입력이 브라우저가 아니라 그 창으로 들어가
+  // 버려서 나머지 글이 전혀 입력되지 않는다.
+  const fileChooserPromise = page.waitForEvent("filechooser");
   await frame.click(selectors.toolbar.imageButton);
-  const fileInput = await frame.waitForSelector(selectors.imageUpload.fileInputSelector, { state: "attached" });
-  await fileInput.setInputFiles(imagePath);
+  const fileChooser = await fileChooserPromise;
+  await fileChooser.setFiles(imagePath);
   // 업로드/렌더링 대기 (네트워크 요청 완료를 기다림)
   await frame.waitForTimeout(1500);
   await page.keyboard.press("Enter");

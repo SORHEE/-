@@ -19,10 +19,6 @@
     "quoteTypeDefault": ".se-quotation-toolbar-panel .se-quotation-type-default"
   },
 
-  "imageUpload": {
-    "fileInputSelector": "input.se-image-input-tag[type='file'], input[type='file'][accept*='image']"
-  },
-
   "publish": {
     "openPublishLayerButton": "button.publish_btn_area button, .se-actionbar-area button:has-text('발행')",
     "openTypeRadioGroupName": "open_type",

@@ -91,35 +91,39 @@ async function typeTitle(frame, selectors, title) {
   await frame.type(titleSelector, title, { delay: 15 });
 }
 
-async function typeParagraphLine(frame, text, { bold = false } = {}) {
-  if (bold) await frame.keyboard.down("Control");
+// 주의: 키보드 입력은 Frame이 아니라 Page 전체에 대해서만 가능하다(Playwright의 keyboard는
+// Page에만 있음). 그래서 아래 함수들은 클릭/입력 대상 찾기는 frame으로, 실제 키 입력은
+// page.keyboard로 나눠서 한다.
+
+async function typeParagraphLine(page, text, { bold = false } = {}) {
   if (bold) {
-    await frame.keyboard.press("b");
-    await frame.keyboard.up("Control");
+    await page.keyboard.down("Control");
+    await page.keyboard.press("b");
+    await page.keyboard.up("Control");
   }
-  await frame.keyboard.type(text, { delay: 12 });
+  await page.keyboard.type(text, { delay: 12 });
   if (bold) {
-    await frame.keyboard.down("Control");
-    await frame.keyboard.press("b");
-    await frame.keyboard.up("Control");
+    await page.keyboard.down("Control");
+    await page.keyboard.press("b");
+    await page.keyboard.up("Control");
   }
-  await frame.keyboard.press("Enter");
+  await page.keyboard.press("Enter");
 }
 
-async function insertImage(frame, selectors, imagePath) {
+async function insertImage(page, frame, selectors, imagePath) {
   await frame.click(selectors.toolbar.imageButton);
   const fileInput = await frame.waitForSelector(selectors.imageUpload.fileInputSelector, { state: "attached" });
   await fileInput.setInputFiles(imagePath);
   // 업로드/렌더링 대기 (네트워크 요청 완료를 기다림)
   await frame.waitForTimeout(1500);
-  await frame.keyboard.press("Enter");
+  await page.keyboard.press("Enter");
 }
 
-async function applyUniformFontSize(frame, selectors, bodySelector) {
+async function applyUniformFontSize(page, frame, selectors, bodySelector) {
   await frame.click(bodySelector);
-  await frame.keyboard.down("Control");
-  await frame.keyboard.press("a");
-  await frame.keyboard.up("Control");
+  await page.keyboard.down("Control");
+  await page.keyboard.press("a");
+  await page.keyboard.up("Control");
   await frame.click(selectors.toolbar.fontSizeDropdown);
   await frame.click(selectors.toolbar.fontSize15pt);
 }
@@ -149,23 +153,23 @@ export async function publishPost({ blogId, title, blocks, imagesByAlt = {}, ope
     await dismissHelpPopups(frame, selectors);
 
     await typeTitle(frame, selectors, title);
-    await frame.keyboard.press("Enter");
+    await page.keyboard.press("Enter");
 
     for (const block of blocks) {
       if (block.type === "image") {
         const imagePath = imagesByAlt[block.altText];
-        if (imagePath) await insertImage(frame, selectors, imagePath);
+        if (imagePath) await insertImage(page, frame, selectors, imagePath);
         continue;
       }
       const bold = block.type === "subheading";
       const lines = block.type === "quote" ? block.lines.map((l) => `“ ${l} ”`) : block.lines;
       for (const line of lines) {
-        await typeParagraphLine(frame, line, { bold });
+        await typeParagraphLine(page, line, { bold });
       }
     }
 
     // 본문 전체 15pt로 통일 (요구사항 1)
-    await applyUniformFontSize(frame, selectors, selectors.writePage.bodyArea);
+    await applyUniformFontSize(page, frame, selectors, selectors.writePage.bodyArea);
 
     // 발행 레이어 열기
     await page.click(selectors.publish.openPublishLayerButton);

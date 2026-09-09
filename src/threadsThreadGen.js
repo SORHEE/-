@@ -21,7 +21,7 @@ ${blogPlainText}
 다른 설명 없이 아래 JSON 배열 형식으로만 정확히 응답하세요:
 ["첫 번째 글", "두 번째 글(있다면)", "..."]`;
 
-  const responseText = await generateText({ prompt, maxTurns: 4 });
+  const responseText = await generateText({ prompt, maxTurns: 15 });
   const posts = parseLlmJson(responseText).map((p) => stripAutoCitations(fixLiteralNewlines(p)).trim());
 
   if (posts.length === 0) throw new Error("스레드 글타래 응답이 비어 있습니다.");

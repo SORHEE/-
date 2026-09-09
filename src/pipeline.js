@@ -41,7 +41,7 @@ CTA(마무리에 자연스럽게 유도할 것): ${settings.cta?.label || ""} ${
 다른 설명 없이 아래 JSON 형식으로만 정확히 응답하세요:
 { "title": "블로그 제목", "body": "위 규칙을 지킨 본문 전체" }`;
 
-  const responseText = await generateText({ prompt, maxTurns: 6 });
+  const responseText = await generateText({ prompt, maxTurns: 20 });
   return parseLlmJson(responseText);
 }
 

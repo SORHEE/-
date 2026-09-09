@@ -29,7 +29,7 @@ caption 마지막 줄에는 절대 링크를 넣지 마세요(제가 따로 추�
   "caption": "인스타그램 캡션 전체 텍스트(해시태그 포함 가능)"
 }`;
 
-  const responseText = await generateText({ prompt, maxTurns: 4 });
+  const responseText = await generateText({ prompt, maxTurns: 15 });
   const data = parseLlmJson(responseText);
 
   const coverPath = await generateUniqueImage({
